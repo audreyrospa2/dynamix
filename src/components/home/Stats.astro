@@ -1,0 +1,28 @@
+---
+import { stats } from '../../data/home';
+---
+
+<section class="stats on-yellow" aria-label="Dynamix in numbers">
+  <dl class="wrap stats__grid">
+    {
+      stats.map((s) => (
+        <div class="stat">
+          <dt class="stat__label">{s.label}</dt>
+          <dd class="stat__value">{s.value}</dd>
+        </div>
+      ))
+    }
+  </dl>
+</section>
+
+<style>
+  .stats { padding-block: clamp(3rem, 6vw, 5rem); }
+  .stats__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem 1.5rem; margin-block: 0; }
+  .stat { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 0.5rem; }
+  .stat__value { margin: 0; font-size: clamp(2.6rem, 1.4rem + 3.6vw, 4.75rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+  .stat__label { font-weight: 600; max-width: 14ch; line-height: 1.3; }
+  @media (min-width: 52rem) {
+    .stats__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .stat + .stat { border-left: 2px solid var(--ink); padding-left: 1.75rem; }
+  }
+</style>

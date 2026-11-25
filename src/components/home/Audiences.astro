@@ -1,0 +1,40 @@
+---
+import { audiences as c } from '../../data/home';
+---
+
+<section class="section on-paper" aria-labelledby="aud-title">
+  <div class="wrap aud">
+    <div class="aud__head">
+      <h2 id="aud-title" class="h2">{c.title}</h2>
+      <p class="lead">{c.intro}</p>
+    </div>
+    <ul class="aud__list">
+      {
+        c.items.map((i) => (
+          <li class="aud__row">
+            <span class="mark" aria-hidden="true"></span>
+            <h3 class="aud__who">{i.who}</h3>
+            <p class="aud__text">{i.text}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .aud { display: grid; gap: 3rem; }
+  .aud__head { display: grid; gap: 1.5rem; align-content: start; }
+  .aud__list { border-top: 2px solid var(--ink); }
+  .aud__row { display: grid; grid-template-columns: auto 1fr; column-gap: 1rem; row-gap: 0.4rem; padding: 1.5rem 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+  .aud__row .mark { grid-row: 1 / span 2; align-self: start; margin-top: 0.7rem; }
+  .aud__who { font-size: var(--step-1); font-weight: 700; letter-spacing: -0.015em; line-height: 1.2; }
+  .aud__text { grid-column: 2; color: var(--mute); max-width: 44ch; }
+  @media (min-width: 62rem) {
+    .aud { grid-template-columns: 5fr 7fr; gap: clamp(3rem, 6vw, 6rem); }
+    .aud__head { position: sticky; top: calc(var(--header-h) + 2rem); align-self: start; }
+    .aud__row { grid-template-columns: auto minmax(0, 1fr) minmax(0, 1.1fr); column-gap: 1.5rem; align-items: baseline; padding: 1.75rem 0; }
+    .aud__row .mark { grid-row: auto; margin-top: 0; align-self: center; }
+    .aud__text { grid-column: auto; }
+  }
+</style>

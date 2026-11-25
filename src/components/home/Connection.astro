@@ -1,0 +1,17 @@
+---
+import { connection as c } from '../../data/home';
+---
+
+<section class="section on-white" aria-labelledby="conn-title">
+  <div class="wrap split split--flip">
+    <div class="split__media">
+      <img src={c.image.src} width={c.image.w} height={c.image.h} alt={c.image.alt} loading="lazy" />
+    </div>
+    <div class="split__text">
+      <h2 id="conn-title" class="h2">{c.title}</h2>
+      <div class="prose">
+        {c.body.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </div>
+</section>

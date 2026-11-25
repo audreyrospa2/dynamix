@@ -1,0 +1,121 @@
+---
+import { nav, routes } from '../data/site';
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) => (href === '/' ? path === '/' : path === href || path.startsWith(href + '/'));
+---
+
+<header class="site-header" data-header>
+  <div class="site-header__bar wrap">
+    <a class="site-header__logo" href={routes.home} aria-label="Dynamix Plus, Human Intelligence — home">
+      <img src="/images/logo-dynamix-plus.webp" width="900" height="281" alt="Dynamix Plus Human Intelligence" />
+    </a>
+
+    <button class="site-header__toggle" type="button" aria-expanded="false" aria-controls="primary-nav" data-nav-toggle>
+      <span class="visually-hidden">Menu</span>
+      <span class="site-header__burger" aria-hidden="true"></span>
+    </button>
+
+    <nav id="primary-nav" class="site-nav" aria-label="Primary" data-nav>
+      <ul class="site-nav__list">
+        {
+          nav.map((item) =>
+            item.children ? (
+              <li class="site-nav__item has-sub">
+                <a href={item.href} class:list={['site-nav__link', { 'is-active': isActive(item.href) }]}>
+                  {item.label}
+                </a>
+                <button class="site-nav__sub-toggle" type="button" aria-expanded="false" data-sub-toggle>
+                  <span class="visually-hidden">Show {item.label} pages</span>
+                </button>
+                <ul class="site-nav__sub">
+                  {item.children.map((c) => (
+                    <li>
+                      <a href={c.href} class:list={['site-nav__sublink', { 'is-active': isActive(c.href) }]}>
+                        {c.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ) : (
+              <li class="site-nav__item">
+                <a
+                  href={item.href}
+                  class:list={['site-nav__link', { 'is-active': isActive(item.href), 'site-nav__link--cta': item.href === routes.contact }]}
+                  aria-current={isActive(item.href) ? 'page' : undefined}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ),
+          )
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header { position: sticky; top: 0; z-index: 50; background: var(--ink); color: var(--white); height: var(--header-h); }
+  .site-header__bar { display: flex; align-items: center; justify-content: space-between; height: 100%; }
+  .site-header__logo img { height: 2.35rem; width: auto; }
+
+  .site-nav__list { display: flex; align-items: center; gap: clamp(0.5rem, 1.6vw, 1.75rem); }
+  .site-nav__item { position: relative; display: flex; align-items: center; }
+  .site-nav__link {
+    display: inline-block; padding: 0.5rem 0.25rem; color: var(--white); text-decoration: none; font-weight: 550; font-size: var(--step--1);
+    background: linear-gradient(var(--yellow), var(--yellow)) 0 100% / 0 3px no-repeat; transition: background-size 0.2s;
+  }
+  .site-nav__link:hover, .site-nav__link.is-active { background-size: 100% 3px; }
+  .site-nav__link--cta { background: var(--yellow); color: var(--ink); border-radius: 99px; padding: 0.55rem 1.25rem; font-weight: 650; }
+  .site-nav__link--cta:hover { background: var(--white); background-size: auto; }
+
+  .site-nav__sub-toggle {
+    width: 1.4rem; height: 1.4rem; margin-left: 0.1rem; border: 0; background: none; cursor: pointer; color: var(--white); position: relative;
+  }
+  .site-nav__sub-toggle::after {
+    content: ''; position: absolute; inset: 0; margin: auto; width: 0.45rem; height: 0.45rem;
+    border: solid currentColor; border-width: 0 2px 2px 0; transform: translateY(-0.1rem) rotate(45deg);
+  }
+  .site-nav__sub {
+    position: absolute; top: calc(100% + 0.6rem); left: -1rem; min-width: 15rem; padding: 0.5rem;
+    background: var(--ink-deep); border-top: 3px solid var(--yellow);
+    opacity: 0; visibility: hidden; transform: translateY(-4px); transition: opacity 0.16s, transform 0.16s, visibility 0.16s;
+  }
+  .has-sub:hover .site-nav__sub, .has-sub:focus-within .site-nav__sub, .has-sub.is-open .site-nav__sub { opacity: 1; visibility: visible; transform: none; }
+  .site-nav__sublink { display: block; padding: 0.65rem 0.9rem; color: var(--white); text-decoration: none; font-size: var(--step--1); font-weight: 500; }
+  .site-nav__sublink:hover, .site-nav__sublink.is-active { background: var(--yellow); color: var(--ink); }
+
+  .site-header__toggle { display: none; }
+
+  @media (max-width: 62rem) {
+    .site-header__toggle {
+      display: grid; place-items: center; width: 2.9rem; height: 2.9rem; border: 2px solid var(--line-on-ink); border-radius: 50%;
+      background: none; color: var(--white); cursor: pointer;
+    }
+    .site-header__burger, .site-header__burger::before, .site-header__burger::after {
+      display: block; width: 1.1rem; height: 2px; background: currentColor; content: ''; position: relative; transition: transform 0.2s, background 0.2s;
+    }
+    .site-header__burger::before { position: absolute; top: -0.36rem; }
+    .site-header__burger::after { position: absolute; top: 0.36rem; }
+    [aria-expanded='true'] > .site-header__burger { background: transparent; }
+    [aria-expanded='true'] > .site-header__burger::before { transform: translateY(0.36rem) rotate(45deg); }
+    [aria-expanded='true'] > .site-header__burger::after { transform: translateY(-0.36rem) rotate(-45deg); }
+
+    .site-nav {
+      position: fixed; inset: var(--header-h) 0 0 0; background: var(--ink); padding: 1.5rem var(--gutter) 3rem; overflow-y: auto;
+      transform: translateX(100%); visibility: hidden; transition: transform 0.28s, visibility 0.28s;
+    }
+    .site-nav.is-open { transform: none; visibility: visible; }
+    .site-nav__list { flex-direction: column; align-items: stretch; gap: 0; }
+    .site-nav__item { flex-wrap: wrap; border-bottom: 1px solid var(--line-on-ink); }
+    .site-nav__link:not(.site-nav__link--cta) { flex: 1; padding: 1rem 0; font-size: var(--step-1); font-weight: 650; background: none; }
+    .site-nav__link--cta { flex: none; margin: 1.25rem 0; padding: 0.8rem 1.6rem; }
+    .site-nav__item:has(.site-nav__link--cta) { border-bottom: 0; }
+    .site-nav__sub-toggle { width: 3rem; height: 3rem; }
+    .site-nav__sub { position: static; flex-basis: 100%; min-width: 0; padding: 0 0 0.75rem 0.75rem; background: none; border: 0; display: none; opacity: 1; visibility: visible; transform: none; }
+    .has-sub.is-open .site-nav__sub { display: block; }
+    .has-sub:hover .site-nav__sub { display: none; }
+    .has-sub.is-open:hover .site-nav__sub { display: block; }
+  }
+</style>

@@ -1,0 +1,23 @@
+---
+import { about as c } from '../../data/home';
+---
+
+<section class="section on-paper" aria-labelledby="about-title">
+  <div class="wrap split">
+    <div class="split__media about__media">
+      <img src={c.image.src} width={c.image.w} height={c.image.h} alt={c.image.alt} loading="lazy" />
+    </div>
+    <div class="split__text">
+      <h2 id="about-title" class="h2">{c.title}</h2>
+      <div class="prose">
+        {c.body.map((p) => <p>{p}</p>)}
+      </div>
+      <div class="about__cta"><a class="btn btn--ink" href={c.cta.href}>{c.cta.label}</a></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about__media img { aspect-ratio: 4 / 5; max-height: 40rem; }
+  .about__cta { margin-top: 2.25rem; }
+</style>

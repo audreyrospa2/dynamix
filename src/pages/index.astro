@@ -1,16 +1,37 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/home/Hero.astro';
+import Pillars from '../components/home/Pillars.astro';
+import AiHumanity from '../components/home/AiHumanity.astro';
+import Audiences from '../components/home/Audiences.astro';
+import Connection from '../components/home/Connection.astro';
+import Workshops from '../components/home/Workshops.astro';
+import Wellness from '../components/home/Wellness.astro';
+import TeamBuilding from '../components/home/TeamBuilding.astro';
+import Approach from '../components/home/Approach.astro';
+import Framework from '../components/home/Framework.astro';
+import TimeLadder from '../components/home/TimeLadder.astro';
+import Stats from '../components/home/Stats.astro';
+import Clients from '../components/home/Clients.astro';
+import About from '../components/home/About.astro';
+import FinalCta from '../components/home/FinalCta.astro';
+import { seo } from '../data/home';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title={seo.title} description={seo.description}>
+  <Hero />
+  <Pillars />
+  <AiHumanity />
+  <Audiences />
+  <Connection />
+  <Workshops />
+  <Wellness />
+  <TeamBuilding />
+  <Approach />
+  <Framework />
+  <TimeLadder />
+  <Stats />
+  <Clients />
+  <About />
+  <FinalCta />
+</BaseLayout>

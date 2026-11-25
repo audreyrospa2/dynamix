@@ -1,0 +1,22 @@
+---
+import { aiHumanity as c } from '../../data/home';
+---
+
+<section class="section on-ink" aria-labelledby="ai-title">
+  <div class="wrap split">
+    <div class="split__media">
+      <img src={c.image.src} width={c.image.w} height={c.image.h} alt={c.image.alt} loading="lazy" />
+    </div>
+    <div class="split__text">
+      <h2 id="ai-title" class="h2">{c.title}</h2>
+      <div class="prose">
+        {c.body.map((p) => <p>{p}</p>)}
+      </div>
+      <p class="statement ai__statement">{c.statement}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ai__statement { margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--line-on-ink); color: var(--yellow); }
+</style>

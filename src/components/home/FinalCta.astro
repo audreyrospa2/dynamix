@@ -1,0 +1,30 @@
+---
+import { finalCta as c } from '../../data/home';
+---
+
+<section class="section on-ink" aria-labelledby="cta-title">
+  <div class="wrap cta">
+    <div class="cta__main">
+      <h2 id="cta-title" class="h2">{c.title}</h2>
+      <p class="cta__text">{c.text}</p>
+      <div class="btn-row">
+        <a class="btn btn--yellow" href={c.primary.href}>{c.primary.label}</a>
+        <a class="btn btn--line" href={c.whatsapp.href} rel="noopener">{c.whatsapp.label}</a>
+      </div>
+    </div>
+    <ul class="cta__questions">
+      {c.questions.map((q) => <li><span class="mark" aria-hidden="true"></span>{q}</li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cta { display: grid; gap: 3rem; align-items: center; }
+  .cta__text { margin-block: 1.5rem 2rem; max-width: 40ch; color: var(--mute-on-ink); }
+  .cta__questions { border-top: 2px solid var(--yellow); }
+  .cta__questions li { display: flex; align-items: baseline; gap: 1rem; padding: 1.25rem 0; border-bottom: 1px solid var(--line-on-ink); font-size: var(--step-1); font-weight: 650; line-height: 1.3; letter-spacing: -0.01em; }
+  .cta__questions .mark { transform: translateY(-0.2em); }
+  @media (min-width: 62rem) {
+    .cta { grid-template-columns: 6fr 6fr; gap: clamp(3rem, 7vw, 7rem); }
+  }
+</style>

@@ -1,0 +1,47 @@
+---
+import { workshops as c } from '../../data/home';
+---
+
+<section class="section on-paper" aria-labelledby="ws-title">
+  <div class="wrap">
+    <div class="ws__head">
+      <h2 id="ws-title" class="h2 h2--wide">{c.title}</h2>
+      <p class="lead">{c.intro}</p>
+    </div>
+    <div class="ws__grid">
+      {
+        c.items.map((w) => (
+          <article class="ws">
+            <div class:list={['ws__media', `ws__media--${w.tone}`]}>
+              <img src={w.image.src} width={w.image.w} height={w.image.h} alt={w.image.alt} loading="lazy" />
+            </div>
+            <h3 class="ws__title">{w.title}</h3>
+            {w.subtitle && <p class="ws__subtitle">{w.subtitle}</p>}
+            <p class="ws__text">{w.text}</p>
+            <a class="link ws__cta" href={w.cta.href}>{w.cta.label}</a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .ws__head { display: grid; gap: 1.25rem; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .ws__grid { display: grid; gap: 3rem; }
+  .ws { display: flex; flex-direction: column; align-items: flex-start; }
+  .ws__media { width: 100%; aspect-ratio: 4 / 3; overflow: hidden; margin-bottom: 1.5rem; }
+  .ws__media img { width: 100%; height: 100%; object-fit: cover; }
+  .ws__media--photo img { filter: grayscale(1) contrast(1.05); transition: filter 0.3s; }
+  .ws:hover .ws__media--photo img { filter: none; }
+  .ws__media--yellow { background: var(--yellow); display: grid; place-items: end center; }
+  .ws__media--yellow img { width: auto; height: 108%; object-fit: contain; margin-bottom: -8%; }
+  .ws__title { font-size: var(--step-2); line-height: 1.1; font-weight: 750; letter-spacing: -0.02em; }
+  .ws__subtitle { font-weight: 650; color: var(--mute); margin-top: 0.35rem; }
+  .ws__text { margin-block: 1rem 1.5rem; max-width: 30ch; }
+  .ws__cta { margin-top: auto; }
+  @media (min-width: 52rem) {
+    .ws__grid { grid-template-columns: repeat(3, 1fr); gap: clamp(1.5rem, 3vw, 3rem); }
+    .ws__head { grid-template-columns: 7fr 5fr; align-items: end; }
+  }
+</style>

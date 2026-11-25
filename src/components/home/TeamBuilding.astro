@@ -1,0 +1,26 @@
+---
+import { teamBuilding as c } from '../../data/home';
+---
+
+<section class="section on-white" aria-labelledby="tb-title">
+  <div class="wrap split split--flip">
+    <div class="split__media tb__media">
+      <img src={c.image.src} width={c.image.w} height={c.image.h} alt={c.image.alt} loading="lazy" />
+    </div>
+    <div class="split__text">
+      <h2 id="tb-title" class="h2">{c.title}</h2>
+      <p class="statement tb__statement">{c.statement}</p>
+      <div class="prose">
+        {c.body.map((p) => <p>{p}</p>)}
+      </div>
+      <div class="tb__cta"><a class="btn btn--yellow" href={c.cta.href}>{c.cta.label}</a></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tb__media img { aspect-ratio: 5 / 4; object-position: 50% 40%; filter: grayscale(1) contrast(1.05); }
+  .tb__statement { margin-bottom: 1.75rem; padding-left: 1.1rem; border-left: 6px solid var(--yellow); }
+  .tb__cta { margin-top: 2.25rem; }
+  .btn--yellow:hover { background: var(--ink); color: var(--white); }
+</style>

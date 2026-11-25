@@ -1,0 +1,35 @@
+---
+import { pillars } from '../../data/home';
+---
+
+<section class="section on-white" aria-labelledby="pillars-title">
+  <div class="wrap">
+    <h2 id="pillars-title" class="h2 h2--wide pillars__title">{pillars.title}</h2>
+    <div class="pillars__grid">
+      {
+        pillars.items.map((p) => (
+          <article class="pillar">
+            <h3 class="pillar__title">{p.title}</h3>
+            <p class="pillar__text">{p.text}</p>
+            <ul class="pillar__tags" aria-label={`${p.title} themes`}>
+              {p.tags.map((t) => <li>{t}</li>)}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .pillars__title { margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .pillars__grid { display: grid; gap: 2.5rem; }
+  .pillar { border-top: 6px solid var(--yellow); padding-top: 1.5rem; }
+  .pillar__title { font-size: var(--step-2); font-weight: 750; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 1rem; }
+  .pillar__text { max-width: 30ch; margin-bottom: 1.5rem; }
+  .pillar__tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .pillar__tags li { border: 1.5px solid var(--ink); border-radius: 99px; padding: 0.25rem 0.9rem; font-size: var(--step--1); font-weight: 550; }
+  @media (min-width: 52rem) {
+    .pillars__grid { grid-template-columns: repeat(3, 1fr); gap: clamp(1.5rem, 3vw, 3rem); }
+  }
+</style>

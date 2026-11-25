@@ -1,0 +1,44 @@
+---
+import { framework as c } from '../../data/home';
+---
+
+<section class="section on-ink" id="framework" aria-labelledby="fw-title">
+  <div class="wrap">
+    <h2 id="fw-title" class="h2 h2--wide fw__title">{c.title}</h2>
+    <ol class="fw__stages">
+      {
+        c.stages.map((s, i) => (
+          <li class:list={['fw__stage', { 'fw__stage--last': i === c.stages.length - 1 }]} style={`--i:${i}`}>
+            <span class="fw__num" aria-hidden="true">{i + 1}</span>
+            <h3 class="fw__stage-title">{s.title}</h3>
+            <ul class="fw__items">
+              {s.items.map((it) => <li>{it}</li>)}
+            </ul>
+          </li>
+        ))
+      }
+    </ol>
+    <a class="btn btn--yellow" href={c.cta.href}>{c.cta.label}</a>
+  </div>
+</section>
+
+<style>
+  .fw__title { margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .fw__stages { display: grid; gap: 1rem; margin-bottom: 3rem; }
+  .fw__stage { border: 1.5px solid var(--line-on-ink); padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+  .fw__stage--last { background: var(--yellow); color: var(--ink); border-color: var(--yellow); }
+  .fw__num {
+    width: 2.6rem; height: 2.6rem; border-radius: 50%; display: grid; place-items: center; font-weight: 800;
+    background: var(--yellow); color: var(--ink);
+  }
+  .fw__stage--last .fw__num { background: var(--ink); color: var(--yellow); }
+  .fw__stage-title { font-size: var(--step-1); font-weight: 750; letter-spacing: -0.015em; line-height: 1.15; }
+  .fw__items li { padding-block: 0.45rem; border-top: 1px solid var(--line-on-ink); font-size: var(--step--1); }
+  .fw__stage--last .fw__items li { border-color: rgba(48, 48, 51, 0.28); }
+  @media (min-width: 62rem) {
+    /* A rising staircase: each stage starts higher than the one before it. */
+    .fw__stages { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; align-items: end; }
+    .fw__stage { margin-top: calc((3 - var(--i)) * 3.25rem); min-height: 22rem; padding: 1.75rem; }
+    .fw__items { margin-top: auto; }
+  }
+</style>

@@ -1,0 +1,40 @@
+---
+import { clients } from '../../data/home';
+import { clientGroups } from '../../data/clients';
+---
+
+<section class="section on-white" aria-labelledby="clients-title">
+  <div class="wrap">
+    <h2 id="clients-title" class="h2 clients__title">{clients.title}</h2>
+    <div class="clients">
+      {
+        clientGroups.map((g) => (
+          <div class="clients__group">
+            <h3 class="clients__label"><span class="mark" aria-hidden="true"></span>{g.label}</h3>
+            <ul class="clients__logos">
+              {g.logos.map((l) => (
+                <li><img src={l.src} width={l.w} height={l.h} alt={l.alt} loading="lazy" /></li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .clients__title { margin-bottom: clamp(2rem, 4vw, 3rem); }
+  .clients__group { display: grid; gap: 1.25rem; padding-block: 1.75rem; border-top: 1px solid var(--line); }
+  .clients__label { display: flex; align-items: center; gap: 0.75rem; font-size: var(--step-0); font-weight: 700; }
+  .clients__logos { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem 2.25rem; }
+  .clients__logos img {
+    width: auto; height: auto; max-height: 3.1rem; max-width: 9rem; object-fit: contain;
+    mix-blend-mode: multiply; filter: grayscale(1); opacity: 0.8; transition: filter 0.2s, opacity 0.2s;
+  }
+  .clients__logos li:hover img { filter: none; opacity: 1; }
+  @media (min-width: 62rem) {
+    .clients__group { grid-template-columns: 14rem 1fr; gap: 2rem; align-items: start; }
+    .clients__label { padding-top: 0.5rem; }
+  }
+</style>

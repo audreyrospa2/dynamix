@@ -1,0 +1,66 @@
+---
+import { hero } from '../../data/home';
+---
+
+<section class="hero on-paper" aria-labelledby="hero-title">
+  <div class="wrap hero__grid">
+    <div class="hero__text">
+      <h1 id="hero-title" class="hero__title">
+        {hero.title.map((line) => <span class="hero__mask"><span data-hero-line>{line}</span></span>)}
+      </h1>
+      <p class="hero__tagline" data-hero-fade>{hero.tagline}</p>
+      <div class="hero__lead prose" data-hero-fade>
+        {hero.lead.map((p) => <p>{p}</p>)}
+      </div>
+      <p class="hero__kicker" data-hero-fade>{hero.kicker}</p>
+      <div class="btn-row" data-hero-fade>
+        <a class="btn btn--yellow" href={hero.primary.href}>{hero.primary.label}</a>
+        <a class="btn btn--line" href={hero.secondary.href}>{hero.secondary.label}</a>
+      </div>
+    </div>
+
+    <div class="hero__stage" aria-hidden="true">
+      <img data-hero-figure class="fig fig--a" src="/images/hero/figure-a.webp" width="857" height="900" alt="" />
+      <img data-hero-figure class="fig fig--c" src="/images/hero/figure-c.webp" width="858" height="900" alt="" />
+      <img data-hero-figure class="fig fig--b" src="/images/hero/figure-b.webp" width="863" height="900" alt="" fetchpriority="high" />
+    </div>
+  </div>
+
+  <div class="hero__facts-wrap">
+    <ul class="wrap hero__facts">
+      {hero.facts.map((f) => <li><span class="mark" aria-hidden="true"></span>{f}</li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .hero { padding-top: clamp(2.5rem, 6vw, 5rem); overflow: hidden; }
+  .hero__grid { display: grid; gap: 2rem; align-items: center; }
+  .hero__title {
+    font-size: clamp(2.9rem, 1.2rem + 7.6vw, 6.6rem);
+    line-height: 0.95; font-weight: 800; letter-spacing: -0.045em; margin-bottom: 1.6rem;
+  }
+  .hero__mask { display: block; overflow: hidden; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+  .hero__mask > span { display: block; }
+  .hero__tagline { font-size: var(--step-2); line-height: 1.15; font-weight: 700; letter-spacing: -0.02em; max-width: 20ch; margin-bottom: 1.5rem; }
+  .hero__lead { margin-bottom: 1.5rem; }
+  .hero__kicker { color: var(--mute); font-size: var(--step--1); max-width: 46ch; margin-bottom: 2rem; }
+
+  .hero__stage { position: relative; aspect-ratio: 1 / 1.02; width: 100%; max-width: 40rem; margin-inline: auto; }
+  .fig { position: absolute; height: auto; }
+  .fig--a { width: 50%; left: -2%; top: 3%; filter: grayscale(0.2); }
+  .fig--c { width: 56%; right: -3%; top: 0; }
+  .fig--b { width: 62%; left: 20%; bottom: -2%; }
+
+  .hero__facts-wrap { margin-top: clamp(2.5rem, 5vw, 4rem); border-top: 1px solid var(--line); }
+  .hero__facts { display: grid; }
+  .hero__facts li { display: flex; align-items: center; gap: 0.9rem; padding: 1.1rem 0; border-bottom: 1px solid var(--line); font-weight: 600; font-size: var(--step--1); }
+  .hero__facts li:last-child { border-bottom: 0; }
+
+  @media (min-width: 62rem) {
+    .hero__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 3rem; }
+    .hero__facts { grid-template-columns: repeat(3, 1fr); }
+    .hero__facts li { border-bottom: 0; padding: 1.4rem 1.5rem 1.4rem 0; }
+    .hero__facts li + li { border-left: 1px solid var(--line); padding-left: 1.5rem; }
+  }
+</style>

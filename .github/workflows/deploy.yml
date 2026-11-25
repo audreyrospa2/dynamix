@@ -32,4 +32,3 @@ jobs:
           protocol: ftps
           local-dir: ./dist/
           server-dir: ./
-          dry-run: true   # remove this line after checking the first run

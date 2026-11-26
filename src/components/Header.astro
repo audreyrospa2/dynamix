@@ -1,7 +1,8 @@
 ---
 import { nav, routes } from '../data/site';
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
-const isActive = (href: string) => (href === '/' ? path === '/' : path === href || path.startsWith(href + '/'));
+// Section links all live on the homepage, so only Home can be "current".
+const isActive = (href: string) => href === path;
 ---
 
 <header class="site-header" data-header>

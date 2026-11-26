@@ -15,7 +15,7 @@ export const hero = {
     'Turn purposeful challenges, feedback and reflection into new ways of working—not just a memorable training day.',
   ],
   kicker: 'Corporate training, experiential team building and workplace wellness workshops in Hong Kong.',
-  primary: { label: 'Discuss Your Team’s Needs', href: routes.contact },
+  primary: { label: 'Discuss Your Team’s Needs', href: routes.timeLadder },
   secondary: { label: 'Explore Our Workshops', href: routes.workshops },
   facts: [
     'Built on Dynamix’s experience since 2002',
@@ -137,7 +137,7 @@ export const approach = {
     { title: 'Practise a different response', text: 'Focus on one specific behaviour, with feedback.' },
     { title: 'Bring it back to work', text: 'Repeat, retry and apply with workplace support.' },
   ],
-  cta: { label: 'Discover Our Learning Approach', href: routes.approach },
+  cta: { label: 'Discover Our Learning Approach', href: routes.learningApproach },
 };
 
 export const framework = {
@@ -177,7 +177,7 @@ export const about = {
     'Legacy client experience spans business, government, NGOs and universities.',
     'Dynamix Plus adds the Human Intelligence Framework™, facilitation and coaching.',
   ],
-  cta: { label: 'Meet Dynamix Plus', href: routes.about },
+  cta: { label: 'Meet Dynamix Plus', href: routes.aboutDynamix },
   image: { src: '/images/photos/about-team.webp', alt: 'Three colleagues leaping together above a still lake', w: 1200, h: 1606 },
 };
 
@@ -190,6 +190,6 @@ export const finalCta = {
     'Create space for wellbeing or prepare future managers?',
   ],
   text: 'Tell us what is getting in the way. We will discuss a learning experience around your people, priorities and available time.',
-  primary: { label: 'Discuss Your Team’s Needs', href: routes.contact },
+  primary: { label: 'Discuss Your Team’s Needs', href: routes.timeLadder },
   whatsapp: { label: 'WhatsApp Jasmine', href: contact.whatsappUrl },
 };

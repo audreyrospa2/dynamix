@@ -2,21 +2,26 @@
 // Every internal link on the site is defined here so pages can be added
 // (or renamed) in one place.
 
+// Everything lives on the homepage for now, so every route is an anchor to a
+// section. The "/#" prefix keeps the links working from any future page.
 export const routes = {
   home: '/',
-  about: '/about',
-  workshops: '/workshops',
-  lastMile: '/workshops/the-last-mile',
-  fde: '/workshops/fde-fundamentals-for-hr',
-  facilitation: '/workshops/facilitation-for-workplace-learning',
-  wellness: '/workplace-wellness',
-  lunchBreak: '/workplace-wellness#lunch-break',
-  corporateTraining: '/corporate-training',
-  facilitationTraining: '/facilitation-training',
-  tailored: '/tailored-programmes',
-  approach: '/our-approach',
-  framework: '/our-approach#framework',
-  contact: '/contact',
+  about: '/#develop-people',
+  workshops: '/#workshops',
+  lastMile: '/#workshops',
+  fde: '/#workshops',
+  facilitation: '/#workshops',
+  wellness: '/#wellness',
+  lunchBreak: '/#wellness',
+  corporateTraining: '/#team-building',
+  facilitationTraining: '/#learning-approach',
+  tailored: '/#about-dynamix',
+  aboutDynamix: '/#about-dynamix',
+  approach: '/#framework',
+  learningApproach: '/#learning-approach',
+  framework: '/#framework',
+  timeLadder: '/#time-ladder',
+  contact: '/#contact',
 } as const;
 
 export const contact = {

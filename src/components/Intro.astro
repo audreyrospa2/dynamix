@@ -1,0 +1,30 @@
+---
+interface Props {
+  id?: string;
+  title?: string;
+  statement?: string;
+  body?: string[];
+  tone?: 'white' | 'paper' | 'ink';
+}
+const { id = 'intro', title, statement, body = [], tone = 'white' } = Astro.props;
+---
+
+<section class:list={['section', `on-${tone}`]} aria-labelledby={title ? `${id}-title` : undefined}>
+  <div class="wrap intro">
+    <div class="intro__head">
+      {title && <h2 id={`${id}-title`} class="h2">{title}</h2>}
+      {statement && <p class="statement intro__statement">{statement}</p>}
+    </div>
+    <div class="prose intro__body">{body.map((p) => <p set:html={p} />)}</div>
+  </div>
+</section>
+
+<style>
+  .intro { display: grid; gap: 1.75rem; }
+  .intro__statement { padding-left: 1.1rem; border-left: 6px solid var(--yellow); }
+  .intro__head > .h2 + .intro__statement { margin-top: 1.5rem; }
+  .intro__body { max-width: 56ch; }
+  @media (min-width: 62rem) {
+    .intro { grid-template-columns: 5fr 7fr; gap: clamp(3rem, 6vw, 6rem); align-items: start; }
+  }
+</style>

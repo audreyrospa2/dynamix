@@ -1,0 +1,178 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { contactPage as c } from '../data/pages';
+import { contact } from '../data/site';
+---
+
+<BaseLayout title={c.seo.title} description={c.seo.description}>
+  <section class="contact on-paper" aria-labelledby="contact-title">
+    <div class="wrap contact__grid">
+      <div class="contact__intro">
+        <span class="mark" aria-hidden="true"></span>
+        <h1 id="contact-title" class="contact__title">{c.hero.title}</h1>
+        <p class="contact__lead">{c.hero.lead}</p>
+
+        <div class="btn-row contact__ctas">
+          <a class="btn btn--yellow" href="#enquiry">Discuss Your Team’s Needs</a>
+          <a class="btn btn--line" href={contact.whatsappUrl} rel="noopener">WhatsApp Jasmine</a>
+        </div>
+
+        <div class="contact__details">
+          <h2 class="contact__details-title">{contact.brand} enquiries — {contact.person}</h2>
+          <dl>
+            <div><dt>WhatsApp</dt><dd><a href={contact.whatsappUrl} rel="noopener">{contact.whatsapp}</a></dd></div>
+            <div><dt>Phone</dt><dd><a href={contact.phoneUrl}>{contact.phone}</a></dd></div>
+            <div><dt>Email</dt><dd><a href={contact.emailUrl}>{contact.email}</a></dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <form class="form" id="enquiry" novalidate data-wa={contact.whatsappUrl} data-email={contact.email}>
+        <div class="field">
+          <label for="f-name">Name <span class="req">required</span></label>
+          <input id="f-name" name="name" type="text" autocomplete="name" required />
+        </div>
+        <div class="field">
+          <label for="f-org">Organisation</label>
+          <input id="f-org" name="organisation" type="text" autocomplete="organization" />
+        </div>
+        <div class="field">
+          <label for="f-email">Work Email <span class="req">required</span></label>
+          <input id="f-email" name="email" type="email" autocomplete="email" required />
+        </div>
+        <div class="field">
+          <label for="f-programme">Programme Interest</label>
+          <select id="f-programme" name="programme">
+            <option value="">Choose…</option>
+            {c.programmeOptions.map((o) => <option>{o}</option>)}
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-message">Your Team’s Needs <span class="req">required</span></label>
+          <textarea id="f-message" name="message" rows="5" required></textarea>
+        </div>
+
+        <fieldset class="optional">
+          <legend>Optional details</legend>
+          <div class="field-row">
+            <div class="field">
+              <label for="f-size">Approximate Group Size</label>
+              <select id="f-size" name="size">
+                <option value="">Choose…</option>
+                {c.groupSizes.map((o) => <option>{o}</option>)}
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-date">Preferred Date</label>
+              <input id="f-date" name="date" type="text" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-budget">Budget Range</label>
+            <input id="f-budget" name="budget" type="text" />
+          </div>
+        </fieldset>
+
+        <p class="form__error" role="alert" data-error hidden></p>
+
+        <div class="btn-row">
+          <button class="btn btn--yellow" type="submit" data-channel="whatsapp">Send via WhatsApp</button>
+          <button class="btn btn--line" type="submit" data-channel="email">Send by email</button>
+        </div>
+        <p class="form__note">This opens WhatsApp or your email app with your message ready to send. Nothing is sent until you press send there.</p>
+      </form>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('enquiry') as HTMLFormElement | null;
+  if (form) {
+    // ?programme=... (from a CTA elsewhere on the site) pre-selects Programme Interest.
+    const wanted = new URLSearchParams(location.search).get('programme')?.trim() ?? '';
+    const select = form.querySelector<HTMLSelectElement>('#f-programme');
+    if (wanted && select) {
+      const match = Array.from(select.options).find((o) => o.value === wanted || o.text === wanted);
+      if (match) select.value = match.value || match.text;
+    }
+    const errorEl = form.querySelector<HTMLElement>('[data-error]')!;
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const submitter = (e as SubmitEvent).submitter as HTMLButtonElement | null;
+      const channel = submitter?.dataset.channel === 'email' ? 'email' : 'whatsapp';
+      const data = new FormData(form);
+      const v = (k: string) => String(data.get(k) ?? '').trim();
+
+      const missing = ['name', 'email', 'message'].filter((k) => !v(k));
+      const badEmail = !missing.includes('email') && !/^\S+@\S+\.\S+$/.test(v('email'));
+      if (missing.length || badEmail) {
+        errorEl.textContent = 'Please add your name, a work email we can reply to, and your team’s needs.';
+        errorEl.hidden = false;
+        const first = missing[0] ?? 'email';
+        form.querySelector<HTMLElement>(`[name="${first}"]`)?.focus();
+        return;
+      }
+      errorEl.hidden = true;
+
+      const lines = [
+        'Hello Dynamix Plus,',
+        '',
+        `Name: ${v('name')}`,
+        v('organisation') ? `Organisation: ${v('organisation')}` : null,
+        `Work email: ${v('email')}`,
+        v('programme') ? `Programme interest: ${v('programme')}` : null,
+        v('size') ? `Approximate group size: ${v('size')}` : null,
+        v('date') ? `Preferred date: ${v('date')}` : null,
+        v('budget') ? `Budget range: ${v('budget')}` : null,
+        '',
+        'Our team’s needs:',
+        v('message'),
+      ].filter((l): l is string => l !== null);
+      const body = lines.join('\n');
+
+      if (channel === 'whatsapp') {
+        window.open(`${form.dataset.wa}?text=${encodeURIComponent(body)}`, '_blank', 'noopener');
+      } else {
+        const topic = v('programme');
+        const subject = topic ? `Enquiry: ${topic}` : 'Enquiry from the Dynamix Plus website';
+        window.location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      }
+    });
+  }
+</script>
+
+<style>
+  .contact { padding-block: clamp(3rem, 7vw, 6rem) var(--section-y); }
+  .contact__grid { display: grid; gap: clamp(2.5rem, 6vw, 5rem); align-items: start; }
+  .contact .mark { --m: 0.7rem; margin-bottom: 1.5rem; }
+  .contact__title { font-size: clamp(2.3rem, 1.2rem + 4.4vw, 4.5rem); line-height: 1; font-weight: 800; letter-spacing: -0.04em; text-wrap: balance; max-width: 14ch; }
+  .contact__lead { margin-top: 1.5rem; font-size: var(--step-1); line-height: 1.45; max-width: 34ch; }
+  .contact__ctas { margin-top: 2rem; }
+  .contact__details { margin-top: 2.5rem; }
+  .contact__details-title { font-size: var(--step-1); font-weight: 700; }
+  .contact__person { color: var(--mute); margin-bottom: 0.75rem; }
+  .contact__details dl { margin: 0; display: grid; gap: 0.4rem; }
+  .contact__details dl div { display: flex; gap: 1rem; }
+  .contact__details dt { width: 5.5rem; color: var(--mute); }
+  .contact__details dd { margin: 0; }
+  .contact__details a { font-weight: 600; text-decoration: none; background: linear-gradient(var(--yellow), var(--yellow)) 0 100% / 100% 0.25em no-repeat; }
+
+  .form { background: var(--white); padding: clamp(1.5rem, 3.5vw, 2.75rem); display: grid; gap: 1.25rem; border-top: 6px solid var(--yellow); }
+  .field { display: grid; gap: 0.4rem; }
+  .field-row { display: grid; gap: 1.25rem; }
+  .field label { font-weight: 650; font-size: var(--step--1); }
+  .req { font-weight: 500; color: var(--mute); margin-left: 0.4rem; }
+  .field input, .field select, .field textarea {
+    width: 100%; font: inherit; color: var(--ink); background: var(--paper); border: 2px solid transparent; border-radius: 0.5rem; padding: 0.8rem 1rem;
+  }
+  .field textarea { resize: vertical; min-height: 8rem; }
+  .field input:hover, .field select:hover, .field textarea:hover { border-color: var(--line); }
+  .field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible { outline: none; border-color: var(--ink); background: var(--white); box-shadow: 0 0 0 3px var(--yellow); }
+  .optional { border: 0; border-top: 2px solid var(--line); margin: 0; padding: 1.25rem 0 0; display: grid; gap: 1.25rem; }
+  .optional legend { padding: 0 0.75rem 0 0; font-weight: 700; font-size: var(--step--1); }
+  .form__error { color: #a3261b; font-weight: 600; }
+  .form__note { font-size: var(--step--1); color: var(--mute); max-width: 44ch; }
+  @media (min-width: 40rem) { .field-row { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 62rem) { .contact__grid { grid-template-columns: 5fr 6fr; } .form { position: sticky; top: calc(var(--header-h) + 1.5rem); } }
+</style>

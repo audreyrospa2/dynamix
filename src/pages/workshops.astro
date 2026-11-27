@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import ProgramSection from '../components/ProgramSection.astro';
+import { workshopsPage as c } from '../data/pages';
+---
+
+<BaseLayout title={c.seo.title} description={c.seo.description}>
+  <PageHero title={c.hero.title} lead={c.hero.lead} body={c.hero.body} figure={c.hero.figure}>
+    <a class="btn btn--yellow" href="#the-last-mile">See the workshops</a>
+  </PageHero>
+
+  {c.items.map((w, i) => <ProgramSection {...w} tone={i % 2 === 0 ? 'white' : 'paper'} />)}
+</BaseLayout>

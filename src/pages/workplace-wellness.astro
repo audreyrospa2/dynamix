@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import ProgramGrid from '../components/ProgramGrid.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { wellnessPage as c } from '../data/pages';
+
+const items = c.items.map((i) => ({ ...i, focus: [...i.focus, c.outcome] as [string, string, string, string] }));
+---
+
+<BaseLayout title={c.seo.title} description={c.seo.description}>
+  <PageHero title={c.hero.title} lead={c.hero.lead} body={c.hero.body} figure={c.hero.figure} />
+
+  <ProgramGrid id="sessions" items={items} tone="paper" />
+
+  <section class="section on-white" aria-label="Planning and care">
+    <div class="wrap notes">
+      <div class="note">
+        <h2 class="note__label">{c.planning.label}</h2>
+        <p>{c.planning.text}</p>
+      </div>
+      <div class="note note--care">
+        <h2 class="note__label">{c.care.label}</h2>
+        <p>{c.care.text}</p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand cta={c.cta} />
+</BaseLayout>
+
+<style>
+  .notes { display: grid; gap: 1.5rem; }
+  .note { padding: clamp(1.5rem, 3vw, 2.25rem); background: var(--paper); border-top: 6px solid var(--yellow); }
+  .note--care { border-top-color: var(--ink); }
+  .note__label { font-size: var(--step-1); font-weight: 750; letter-spacing: -0.015em; margin-bottom: 0.75rem; }
+  .note p { max-width: 60ch; }
+  @media (min-width: 52rem) { .notes { grid-template-columns: 1fr 1fr; } }
+</style>

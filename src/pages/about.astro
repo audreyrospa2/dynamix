@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Intro from '../components/Intro.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Stats from '../components/home/Stats.astro';
+import Clients from '../components/home/Clients.astro';
+import { about as c } from '../data/pages';
+---
+
+<BaseLayout title={c.seo.title} description={c.seo.description}>
+  <PageHero title={c.hero.title} lead={c.hero.lead} figure={c.hero.figure} />
+
+  <section class="section on-white" aria-label="Our approach in brief">
+    <div class="wrap intro">
+      <p class="statement intro__statement">{c.intro.statement}</p>
+      <div class="prose intro__body">
+        {c.intro.body.map((p) => <p>{p}</p>)}
+        <p>{c.intro.after}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section on-ink" aria-labelledby="roots-title">
+    <div class="wrap split">
+      <div class="split__media roots__media">
+        <img src={c.roots.image.src} width={c.roots.image.w} height={c.roots.image.h} alt={c.roots.image.alt} loading="lazy" />
+      </div>
+      <div class="split__text">
+        <h2 id="roots-title" class="h2">{c.roots.title}</h2>
+        <div class="prose">{c.roots.body.map((p) => <p>{p}</p>)}</div>
+      </div>
+    </div>
+  </section>
+
+  <Stats />
+  <Clients />
+
+  <CtaBand title={c.start.title} text={c.start.text} cta={c.start.cta} />
+</BaseLayout>
+
+<style>
+  .intro { display: grid; gap: 1.75rem; }
+  .intro__statement { padding-left: 1.1rem; border-left: 6px solid var(--yellow); }
+  .intro__body { max-width: 56ch; }
+  .roots__media img { aspect-ratio: 4 / 5; max-height: 38rem; }
+  @media (min-width: 62rem) {
+    .intro { grid-template-columns: 5fr 7fr; gap: clamp(3rem, 6vw, 6rem); align-items: start; }
+  }
+</style>

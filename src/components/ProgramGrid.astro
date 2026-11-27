@@ -1,0 +1,55 @@
+---
+import FocusMap from './FocusMap.astro';
+
+interface Item { title: string; tagline?: string; text: string; focus: [string, string, string, string] }
+interface Props {
+  id: string;
+  title?: string;
+  intro?: string[];
+  items: Item[];
+  tone?: 'white' | 'paper';
+  focusHeading?: string;
+}
+const { id, title, intro = [], items, tone = 'paper', focusHeading } = Astro.props;
+---
+
+<section class:list={['section', tone === 'paper' ? 'on-paper' : 'on-white']} id={id} aria-labelledby={`${id}-title`}>
+  <div class="wrap">
+    {
+      title && (
+        <div class="grid__head">
+          <h2 id={`${id}-title`} class="h2 h2--wide">{title}</h2>
+          {intro.length > 0 && <div class="prose">{intro.map((p) => <p set:html={p} />)}</div>}
+        </div>
+      )
+    }
+    <ul class="grid__list">
+      {
+        items.map((it) => (
+          <li class="card">
+            <h3 class="card__title">{it.title}</h3>
+            {it.tagline && <p class="card__tag">{it.tagline}</p>}
+            <p class="card__text">{it.text}</p>
+            <FocusMap focus={it.focus} heading={focusHeading} />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .grid__head { display: grid; gap: 1.25rem; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .grid__list { display: grid; gap: 1.25rem; }
+  .card { background: var(--white); padding: clamp(1.5rem, 3vw, 2.25rem); border-top: 6px solid var(--yellow); }
+  .on-white .card { background: var(--paper); }
+  .card__title { font-size: var(--step-2); font-weight: 750; letter-spacing: -0.02em; line-height: 1.1; }
+  .card__tag { margin-top: 0.6rem; font-weight: 700; font-size: var(--step-1); line-height: 1.25; }
+  .card__text { margin-top: 0.9rem; max-width: 60ch; }
+  @media (min-width: 52rem) {
+    .grid__head { grid-template-columns: 7fr 5fr; align-items: end; }
+  }
+  @media (min-width: 62rem) {
+    .grid__list { grid-template-columns: 1fr 1fr; }
+  }
+</style>

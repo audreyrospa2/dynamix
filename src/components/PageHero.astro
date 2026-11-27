@@ -1,0 +1,37 @@
+---
+interface Props {
+  title: string;
+  lead?: string;
+  body?: string[];
+  figure?: string;
+}
+const { title, lead, body = [], figure } = Astro.props;
+---
+
+<section class="page-hero on-paper" aria-labelledby="page-title">
+  <div class:list={['wrap page-hero__grid', { 'has-figure': !!figure }]}>
+    <div class="page-hero__text">
+      <span class="mark" aria-hidden="true"></span>
+      <h1 id="page-title" class="page-hero__title">{title}</h1>
+      {lead && <p class="page-hero__lead">{lead}</p>}
+      {body.length > 0 && <div class="page-hero__body prose">{body.map((p) => <p>{p}</p>)}</div>}
+      <div class="page-hero__actions"><slot /></div>
+    </div>
+    {figure && <img class="page-hero__figure" src={figure} width="860" height="900" alt="" fetchpriority="high" />}
+  </div>
+</section>
+
+<style>
+  .page-hero { padding-block: clamp(3rem, 7vw, 6rem) clamp(2.5rem, 5vw, 4.5rem); overflow: hidden; }
+  .page-hero__grid { display: grid; gap: 2rem; align-items: center; }
+  .page-hero .mark { --m: 0.7rem; margin-bottom: 1.5rem; }
+  .page-hero__title { font-size: clamp(2.3rem, 1.1rem + 4.4vw, 4.4rem); line-height: 1.02; font-weight: 800; letter-spacing: -0.04em; text-wrap: balance; max-width: 18ch; }
+  .page-hero__lead { margin-top: 1.5rem; font-size: var(--step-1); line-height: 1.4; font-weight: 650; max-width: 36ch; }
+  .page-hero__body { margin-top: 1.25rem; }
+  .page-hero__actions:not(:empty) { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .page-hero__figure { width: min(24rem, 70%); height: auto; margin-inline: auto; }
+  @media (min-width: 62rem) {
+    .page-hero__grid.has-figure { grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr); }
+    .page-hero__figure { width: 100%; max-width: 26rem; margin-inline: auto 0; }
+  }
+</style>

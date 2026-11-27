@@ -9,9 +9,14 @@ import { connection as c } from '../../data/home';
     </div>
     <div class="split__text">
       <h2 id="conn-title" class="h2">{c.title}</h2>
+      <p class="statement conn__statement">{c.statement}</p>
       <div class="prose">
         {c.body.map((p) => <p>{p}</p>)}
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  .conn__statement { margin-bottom: 1.75rem; padding-left: 1.1rem; border-left: 6px solid var(--yellow); }
+</style>

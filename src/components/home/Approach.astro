@@ -1,27 +1,52 @@
 ---
-import { approach as c } from '../../data/home';
+import { approach as home } from '../../data/home';
+
+interface Step { title: string; text?: string }
+interface Props {
+  cta?: boolean;
+  title?: string;
+  statement?: string;
+  steps?: Step[];
+  body?: string[];
+  id?: string;
+  tone?: 'paper' | 'white';
+}
+const {
+  cta = true,
+  title = home.title,
+  statement = home.statement,
+  steps = home.steps,
+  body = home.body,
+  id = 'learning-approach',
+  tone = 'paper',
+} = Astro.props;
 ---
 
-<section class="section on-paper" id="learning-approach" aria-labelledby="appr-title">
+<section class:list={['section', tone === 'paper' ? 'on-paper' : 'on-white']} id={id} aria-labelledby="appr-title">
   <div class="wrap">
-    <h2 id="appr-title" class="h2 appr__title">{c.title}</h2>
-    <ol class="appr__steps">
+    <h2 id="appr-title" class="h2 appr__title">{title}</h2>
+    {statement && <p class="statement appr__statement">{statement}</p>}
+    <ol class:list={['appr__steps', { 'appr__steps--four': steps.length === 4 }]}>
       {
-        c.steps.map((s, i) => (
+        steps.map((s, i) => (
           <li class="appr__step">
             <span class="appr__num" aria-hidden="true">{i + 1}</span>
             <h3 class="appr__step-title">{s.title}</h3>
-            <p>{s.text}</p>
+            {s.text && <p>{s.text}</p>}
           </li>
         ))
       }
     </ol>
-    <a class="link" href={c.cta.href}>{c.cta.label}</a>
+    <div class="prose appr__body">
+      {body.map((p) => <p>{p}</p>)}
+    </div>
+    {cta && <a class="link appr__cta" href={home.cta.href}>{home.cta.label}</a>}
   </div>
 </section>
 
 <style>
-  .appr__title { margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .appr__title { margin-bottom: 1.5rem; }
+  .appr__statement { margin-bottom: clamp(2.5rem, 5vw, 4rem); padding-left: 1.1rem; border-left: 6px solid var(--yellow); }
   .appr__steps { display: grid; gap: 2.5rem; margin-bottom: 3rem; counter-reset: s; }
   .appr__step { position: relative; padding-left: 6.25rem; min-height: 5rem; }
   .appr__num {
@@ -31,8 +56,10 @@ import { approach as c } from '../../data/home';
   .appr__step-title { font-size: var(--step-1); font-weight: 750; letter-spacing: -0.015em; line-height: 1.2; margin-bottom: 0.4rem; padding-top: 0.5rem; }
   .appr__step p { max-width: 30ch; color: var(--mute); }
   .appr__step:not(:last-child)::after { content: ''; position: absolute; left: 2.5rem; top: 5.25rem; bottom: -2.25rem; border-left: 2px dashed var(--ink); }
+  .appr__body { margin-bottom: 2.5rem; max-width: 62ch; }
   @media (min-width: 52rem) {
     .appr__steps { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .appr__steps--four { grid-template-columns: repeat(4, 1fr); }
     .appr__step { padding: 6.5rem 0 0; }
     .appr__step-title { padding-top: 0; }
     .appr__step:not(:last-child)::after { left: 5.5rem; right: -1.5rem; top: 2.5rem; bottom: auto; border-left: 0; border-top: 2px dashed var(--ink); }

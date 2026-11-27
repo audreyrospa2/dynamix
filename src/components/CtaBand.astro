@@ -1,0 +1,30 @@
+---
+import { routes, contact } from '../data/site';
+import { ctaBand } from '../data/pages';
+
+interface Props {
+  title?: string;
+  text?: string;
+  cta?: { label: string; href: string };
+}
+const { title = ctaBand.title, text = ctaBand.text, cta = { label: 'Discuss Your Team’s Needs', href: routes.contact } } = Astro.props;
+---
+
+<section class="section on-ink cta-band" aria-labelledby="cta-band-title">
+  <div class="wrap cta-band__grid">
+    <h2 id="cta-band-title" class="h2 h2--wide">{title}</h2>
+    <div>
+      <p class="cta-band__text">{text}</p>
+      <div class="btn-row">
+        <a class="btn btn--yellow" href={cta.href}>{cta.label}</a>
+        <a class="btn btn--line" href={contact.whatsappUrl} rel="noopener">WhatsApp Jasmine</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-band__grid { display: grid; gap: 2rem; align-items: center; }
+  .cta-band__text { color: var(--mute-on-ink); max-width: 42ch; margin-bottom: 1.75rem; }
+  @media (min-width: 62rem) { .cta-band__grid { grid-template-columns: 7fr 5fr; gap: clamp(3rem, 6vw, 6rem); } }
+</style>

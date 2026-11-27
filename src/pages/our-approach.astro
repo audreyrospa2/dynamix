@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Approach from '../components/home/Approach.astro';
+import Framework from '../components/home/Framework.astro';
+import Intro from '../components/Intro.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { approachPage as c } from '../data/pages';
+---
+
+<BaseLayout title={c.seo.title} description={c.seo.description}>
+  <PageHero title={c.hero.title} body={c.hero.body} figure={c.hero.figure} />
+
+  <Framework title={c.framework.title} stages={c.framework.stages} intro="" lead="" footnote="" cta={false} />
+
+  <Approach
+    cta={false}
+    id="learning-approach"
+    tone="paper"
+    title={c.learning.title}
+    statement={c.learning.statement}
+    steps={c.learning.steps}
+    body={c.learning.body}
+  />
+
+  <Intro id="care" title={c.care.title} body={c.care.body} tone="white" />
+
+  <CtaBand cta={c.care.cta} />
+</BaseLayout>

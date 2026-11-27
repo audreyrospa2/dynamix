@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import ProgramSection from '../components/ProgramSection.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { tailored as c } from '../data/pages';
+---
+
+<BaseLayout title={c.seo.title} description={c.seo.description}>
+  <PageHero title={c.hero.title} lead={c.hero.lead} body={c.hero.body} figure={c.hero.figure} />
+
+  {c.items.map((p, i) => <ProgramSection {...p} tone={i % 2 === 0 ? 'white' : 'paper'} />)}
+
+  <section class="section on-ink" aria-labelledby="journey-title">
+    <div class="wrap">
+      <h2 id="journey-title" class="h2 journey__title">{c.journey.title}</h2>
+      <ol class="journey">
+        {c.journey.steps.map((s, i) => <li class="journey__step"><span class="journey__n" aria-hidden="true">{i + 1}</span>{s}</li>)}
+      </ol>
+    </div>
+  </section>
+
+  <CtaBand cta={c.cta} />
+</BaseLayout>
+
+<style>
+  .journey__title { margin-bottom: clamp(2rem, 4vw, 3.5rem); }
+  .journey { display: grid; gap: 0.75rem; }
+  .journey__step { display: flex; align-items: center; gap: 1rem; padding: 1.1rem 1.5rem; background: var(--ink-deep); border-radius: 99px; font-size: var(--step-1); font-weight: 700; letter-spacing: -0.015em; line-height: 1.2; }
+  .journey__n { flex: none; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--yellow); color: var(--ink); display: grid; place-items: center; font-weight: 800; font-size: var(--step-0); }
+  @media (min-width: 62rem) {
+    .journey { grid-template-columns: repeat(5, 1fr); gap: 1rem; align-items: end; }
+    .journey__step { flex-direction: column; align-items: flex-start; border-radius: 0; padding: 1.5rem; justify-content: space-between; font-size: var(--step-0); }
+    .journey__step:nth-child(1) { min-height: 8rem; }
+    .journey__step:nth-child(2) { min-height: 10rem; }
+    .journey__step:nth-child(3) { min-height: 12rem; }
+    .journey__step:nth-child(4) { min-height: 14rem; }
+    .journey__step:nth-child(5) { min-height: 16rem; background: var(--yellow); color: var(--ink); }
+    .journey__step:nth-child(5) .journey__n { background: var(--ink); color: var(--yellow); }
+  }
+</style>

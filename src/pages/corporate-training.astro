@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import ProgramSection from '../components/ProgramSection.astro';
+import ProgramGrid from '../components/ProgramGrid.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { corporatePage as c } from '../data/pages';
+---
+
+<BaseLayout title={c.seo.title} description={c.seo.description}>
+  <PageHero title={c.hero.title} lead={c.hero.lead} body={c.hero.body} figure={c.hero.figure} />
+
+  {
+    c.programmes.map((p, i) => (
+      <ProgramSection id={p.id} title={p.title} tagline={p.tagline} intro={[p.text]} focus={p.focus} tone={i % 2 === 0 ? 'white' : 'paper'} />
+    ))
+  }
+
+  <ProgramGrid id="experiences" title={c.experiences.title} intro={c.experiences.intro} items={c.experiences.items} tone="white" focusHeading="Focus" />
+
+  <section class="section on-yellow" aria-labelledby="debrief-title">
+    <div class="wrap debrief">
+      <h2 id="debrief-title" class="h2">{c.debrief.title}</h2>
+      <ol class="debrief__steps">
+        {
+          c.debrief.steps.map((s, i) => (
+            <li class="debrief__step">
+              <span class="debrief__n" aria-hidden="true">{i + 1}</span>
+              <h3 class="debrief__word">{s.word}</h3>
+              <p>{s.question}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <CtaBand cta={c.cta} />
+</BaseLayout>
+
+<style>
+  .debrief { display: grid; gap: 2.5rem; }
+  .debrief__steps { display: grid; gap: 1rem; }
+  .debrief__step { background: var(--ink); color: var(--white); padding: 1.5rem; display: grid; gap: 0.5rem; }
+  .debrief__n { width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--yellow); color: var(--ink); display: grid; place-items: center; font-weight: 800; }
+  .debrief__word { font-size: var(--step-2); font-weight: 800; letter-spacing: -0.03em; line-height: 1; margin-top: 0.5rem; }
+  @media (min-width: 52rem) {
+    .debrief__steps { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (min-width: 62rem) {
+    .debrief { grid-template-columns: 5fr 7fr; align-items: center; gap: clamp(3rem, 6vw, 6rem); }
+    .debrief__steps { grid-template-columns: 1fr; }
+  }
+</style>

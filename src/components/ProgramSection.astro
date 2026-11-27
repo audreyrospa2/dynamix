@@ -1,0 +1,85 @@
+---
+import FocusMap from './FocusMap.astro';
+
+interface Props {
+  id: string;
+  title: string;
+  subtitle?: string;
+  tagline?: string;
+  intro?: string[];
+  listLead?: string;
+  list?: string[];
+  takeaway?: string;
+  forWho?: string;
+  format?: string;
+  boundary?: string;
+  focus?: [string, string, string, string];
+  cta?: { label: string; href: string };
+  tone?: 'white' | 'paper';
+  image?: { src: string; alt: string; w: number; h: number; tone?: string };
+}
+const { id, title, subtitle, tagline, intro = [], listLead, list = [], takeaway, forWho, format, boundary, focus, cta, tone = 'white', image } = Astro.props;
+---
+
+<section class:list={['section', tone === 'paper' ? 'on-paper' : 'on-white']} id={id} aria-labelledby={`${id}-title`}>
+  <div class="wrap prog">
+    <div class="prog__head">
+      <h2 id={`${id}-title`} class="h2">{title}</h2>
+      {subtitle && <p class="prog__sub">{subtitle}</p>}
+      {tagline && <p class="statement prog__tag">{tagline}</p>}
+      {
+        image && (
+          <div class:list={['prog__media', `prog__media--${image.tone ?? 'photo'}`]}>
+            <img src={image.src} width={image.w} height={image.h} alt={image.alt} loading="lazy" />
+          </div>
+        )
+      }
+    </div>
+
+    <div class="prog__body">
+      {intro.length > 0 && <div class="prose">{intro.map((p) => <p set:html={p} />)}</div>}
+      {listLead && <p class="prog__lead" set:html={listLead} />}
+      {list.length > 0 && <ul class="prog__list">{list.map((li) => <li set:html={li} />)}</ul>}
+      {takeaway && <p class="prog__takeaway" set:html={takeaway} />}
+      {
+        (forWho || format) && (
+          <dl class="prog__meta">
+            {forWho && <div><dt>For</dt><dd>{forWho}</dd></div>}
+            {format && <div><dt>Format</dt><dd>{format}</dd></div>}
+          </dl>
+        )
+      }
+      {focus && <FocusMap focus={focus} />}
+      {boundary && <p class="prog__boundary"><strong>Role boundary:</strong> {boundary}</p>}
+      {cta && <div class="prog__cta"><a class="btn btn--yellow" href={cta.href}>{cta.label}</a></div>}
+    </div>
+  </div>
+</section>
+
+<style>
+  .prog { display: grid; gap: 2rem; }
+  .prog__head .h2 { max-width: 14ch; }
+  .prog__sub { font-weight: 650; color: var(--mute); margin-top: 0.75rem; }
+  .prog__tag { margin-top: 1.5rem; padding-left: 1.1rem; border-left: 6px solid var(--yellow); font-size: var(--step-1); }
+  .prog__media { margin-top: 2rem; overflow: hidden; }
+  .prog__media img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  .prog__media--photo img { filter: grayscale(1) contrast(1.05); }
+  .prog__media--yellow { background: var(--yellow); aspect-ratio: 4 / 3; display: grid; place-items: end center; }
+  .prog__media--yellow img { width: auto; height: 108%; aspect-ratio: auto; object-fit: contain; margin-bottom: -8%; }
+  .prog__lead { margin-top: 1.5rem; font-weight: 650; }
+  .prog__list { margin-top: 0.9rem; border-top: 2px solid var(--ink); }
+  .prog__list li { position: relative; padding: 0.75rem 0 0.75rem 1.4rem; border-bottom: 1px solid var(--line); }
+  .prog__list li::before { content: ''; position: absolute; left: 0; top: 1.3em; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--yellow); }
+  .prog__takeaway { margin-top: 1.5rem; font-weight: 600; }
+  .prog__meta { margin-top: 1.5rem; display: grid; gap: 0.5rem; }
+  .prog__meta div { display: flex; gap: 1rem; }
+  .prog__meta dt { flex: none; width: 4.5rem; font-weight: 700; }
+  .prog__meta dd { margin: 0; }
+  .prog__boundary { margin-top: 1.5rem; padding: 1rem 1.25rem; background: var(--paper); border-left: 6px solid var(--ink); font-size: var(--step--1); }
+  .on-paper .prog__boundary { background: var(--white); }
+  .prog__cta { margin-top: 2rem; }
+  @media (min-width: 62rem) {
+    .prog { grid-template-columns: 5fr 7fr; gap: clamp(3rem, 6vw, 6rem); align-items: start; }
+    .prog__head { position: sticky; top: calc(var(--header-h) + 2rem); }
+  }
+</style>
